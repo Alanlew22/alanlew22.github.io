@@ -17,7 +17,15 @@
         h3 { color: #6699cc; margin-bottom: -0.3em; }
         .footer { margin-top: 3em; text-align: center; }
         .footer img { width: 400px; height: auto; }
+        /* Hide on screens 600px wide or less */
+        @media (max-width: 600px) {
+            .mobile-hide {
+             display: none;
+                 }
+                }
     </style>
+
+    
     <link rel="icon" href="images/iconx.png" type="image/x-icon">
 </head>
 <body>
@@ -28,7 +36,7 @@
 <div class="intro">
     <div><p>I am a Senior Lecturer (Assistant Professor) at the Faculty of Mathematics, Technion - Israel Institute of Technology. From 2022 to 2025, I was a Postdoctoral Associate in the Department of Mathematical Sciences at Carnegie Mellon University. Previously, I was a Postdoctoral Researcher at the Einstein Institute of Mathematics at the Hebrew University of Jerusalem, hosted by Prof. Eran Nevo. I completed my PhD at the Faculty of Mathematics at the Technion - Israel Institute of Technology, under the supervision of Prof. Roy Meshulam.</p>
 <p>My research is in the area of combinatorics, with a focus on problems related to geometry and topology. In particular, I am interested in problems in topological combinatorics (the study of the topology of simplicial complexes and its applications to discrete geometry), rigidity theory, and spectral graph theory—especially the study of Laplacian and Laplacian-like operators on graphs and simplicial complexes.</p></div>
-    <img src="images/photo3.png"  alt="Profile Photo">
+    <img src="images/photo3.png"  alt="Profile Photo" class="mobile-hide">
 </div>
 
 <h2 style='color:#336699'>Publications</h2>
