@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eden Art</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; }
+    h1 { text-align:center; color:#444; }
+    .grid {
+        display:grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap:10px;
+        padding:20px;
+    }
+    .grid img {
+        width:100%;
+        height:auto;
+        cursor:pointer;
+        border-radius:8px;
+        transition: transform 0.2s;
+    }
+    .grid img:hover { transform: scale(1.05); }
+    /* Lightbox */
+    #lightbox {
+        position:fixed; top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.9);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+    #lightbox img {
+        max-width:90%; max-height:80%;
+    }
+    #lightbox button {
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        background:none; border:none;
+        font-size:2em; color:white;
+        cursor:pointer;
+    }
+    #prev { left:5%; }
+    #next { right:5%; }
+    #close { top:10%; right:10%; transform:none; font-size:2em; }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+<h1>Eden Art</h1>
+<div class="grid">
+<img src="../images/gallery/Eden Art/Pajaritos6.png" onclick="openLightbox(0)">
+<img src="../images/gallery/Eden Art/pirata123.png" onclick="openLightbox(1)">
+<img src="../images/gallery/Eden Art/sunflowers.png" onclick="openLightbox(2)">
+<img src="../images/gallery/Eden Art/ojos.png" onclick="openLightbox(3)">
+<img src="../images/gallery/Eden Art/panda1234x.png" onclick="openLightbox(4)">
+<img src="../images/gallery/Eden Art/pug12.png" onclick="openLightbox(5)">
+<img src="../images/gallery/Eden Art/amigos12.png" onclick="openLightbox(6)">
+<img src="../images/gallery/Eden Art/golemk2.png" onclick="openLightbox(7)">
+<img src="../images/gallery/Eden Art/golemg5.png" onclick="openLightbox(8)">
+<img src="../images/gallery/Eden Art/golemj2.png" onclick="openLightbox(9)">
+<img src="../images/gallery/Eden Art/jamudim1.png" onclick="openLightbox(10)">
+<img src="../images/gallery/Eden Art/Personx2.png" onclick="openLightbox(11)">
+<img src="../images/gallery/Eden Art/Perrogood.png" onclick="openLightbox(12)">
+<img src="../images/gallery/Eden Art/Pajarissgoodsignedfixed.png" onclick="openLightbox(13)">
+<img src="../images/gallery/Eden Art/golemf3.png" onclick="openLightbox(14)">
+<img src="../images/gallery/Eden Art/Pajarin2.png" onclick="openLightbox(15)">
+<img src="../images/gallery/Eden Art/golemx3 (2).png" onclick="openLightbox(16)">
+<img src="../images/gallery/Eden Art/pajarox999.png" onclick="openLightbox(17)">
+<img src="../images/gallery/Eden Art/owlie2.png" onclick="openLightbox(18)">
+<img src="../images/gallery/Eden Art/tree1w2.png" onclick="openLightbox(19)">
+<img src="../images/gallery/Eden Art/anotherdoggyx.png" onclick="openLightbox(20)">
+<img src="../images/gallery/Eden Art/goodboyxyzw9.png" onclick="openLightbox(21)">
+<img src="../images/gallery/Eden Art/darkness.png" onclick="openLightbox(22)">
+<img src="../images/gallery/Eden Art/horsei3x4.png" onclick="openLightbox(23)">
+<img src="../images/gallery/Eden Art/frog3.png" onclick="openLightbox(24)">
+<img src="../images/gallery/Eden Art/sheepy2.png" onclick="openLightbox(25)">
+<img src="../images/gallery/Eden Art/mousy5.png" onclick="openLightbox(26)">
+<img src="../images/gallery/Eden Art/fox4.png" onclick="openLightbox(27)">
+<img src="../images/gallery/Eden Art/hippo3.png" onclick="openLightbox(28)">
+<img src="../images/gallery/Eden Art/Golemrw212waaa.png" onclick="openLightbox(29)">
+<img src="../images/gallery/Eden Art/paton1.png" onclick="openLightbox(30)">
+<img src="../images/gallery/Eden Art/frogg.png" onclick="openLightbox(31)">
+<img src="../images/gallery/Eden Art/hamster12345678.png" onclick="openLightbox(32)">
+<img src="../images/gallery/Eden Art/frogg2.png" onclick="openLightbox(33)">
+<img src="../images/gallery/Eden Art/sheepesgood1.png" onclick="openLightbox(34)">
+<img src="../images/gallery/Eden Art/IMG_0119.jpeg" onclick="openLightbox(35)">
+<img src="../images/gallery/Eden Art/Eagle4.png" onclick="openLightbox(36)">
+<img src="../images/gallery/Eden Art/Cato667.png" onclick="openLightbox(37)">
+<img src="../images/gallery/Eden Art/dumbo.png" onclick="openLightbox(38)">
+<img src="../images/gallery/Eden Art/Pajarongood.png" onclick="openLightbox(39)">
+<img src="../images/gallery/Eden Art/Golemrqq1.png" onclick="openLightbox(40)">
+<img src="../images/gallery/Eden Art/golem5s.png" onclick="openLightbox(41)">
+<img src="../images/gallery/Eden Art/goleme2.png" onclick="openLightbox(42)">
+<img src="../images/gallery/Eden Art/lobo12.png" onclick="openLightbox(43)">
+<img src="../images/gallery/Eden Art/horsei3.png" onclick="openLightbox(44)">
+<img src="../images/gallery/Eden Art/Plantman.png" onclick="openLightbox(45)">
+<img src="../images/gallery/Eden Art/Birdman3.png" onclick="openLightbox(46)">
+<img src="../images/gallery/Eden Art/dragonito7.png" onclick="openLightbox(47)">
+<img src="../images/gallery/Eden Art/muu2.png" onclick="openLightbox(48)">
+<img src="../images/gallery/Eden Art/golemd3.png" onclick="openLightbox(49)">
+<img src="../images/gallery/Eden Art/horsiesx.png" onclick="openLightbox(50)">
+<img src="../images/gallery/Eden Art/tucan12340.png" onclick="openLightbox(51)">
+<img src="../images/gallery/Eden Art/dogxyz.png" onclick="openLightbox(52)">
+</div>
+<div id="lightbox">
+    <button id="prev">&#10094;</button>
+    <img id="lightbox-img">
+    <button id="next">&#10095;</button>
+    <button id="close">&times;</button>
+</div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const images = Array.from(document.querySelectorAll('.grid img')).map(img => img.src);
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    function openLightbox(index) {{
+        currentIndex = index;
+        lightbox.style.display = 'flex';
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showNext() {{
+        currentIndex = (currentIndex + 1) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showPrev() {{
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    document.getElementById('next').onclick = showNext;
+    document.getElementById('prev').onclick = showPrev;
+    document.getElementById('close').onclick = () => lightbox.style.display = 'none';
+    window.addEventListener('keydown', e => {{
+        if(lightbox.style.display === 'flex') {{
+            if(e.key === 'ArrowRight') showNext();
+            if(e.key === 'ArrowLeft') showPrev();
+            if(e.key === 'Escape') lightbox.style.display = 'none';
+        }}
+    }});
+</script>
+</body>
+</html>

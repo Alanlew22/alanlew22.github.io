@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Drawings, Sketches, Comics etc.</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; }
+    h1 { text-align:center; color:#444; }
+    .grid {
+        display:grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap:10px;
+        padding:20px;
+    }
+    .grid img {
+        width:100%;
+        height:auto;
+        cursor:pointer;
+        border-radius:8px;
+        transition: transform 0.2s;
+    }
+    .grid img:hover { transform: scale(1.05); }
+    /* Lightbox */
+    #lightbox {
+        position:fixed; top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.9);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+    #lightbox img {
+        max-width:90%; max-height:80%;
+    }
+    #lightbox button {
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        background:none; border:none;
+        font-size:2em; color:white;
+        cursor:pointer;
+    }
+    #prev { left:5%; }
+    #next { right:5%; }
+    #close { top:10%; right:10%; transform:none; font-size:2em; }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+<h1>Drawings, Sketches, Comics etc.</h1>
+<div class="grid">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - August 25, 2024 17.44.png" onclick="openLightbox(0)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaroconsombras1.jpeg" onclick="openLightbox(1)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./monoc.png" onclick="openLightbox(2)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarostirados.png" onclick="openLightbox(3)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - March 29, 2024 22.09.jpg" onclick="openLightbox(4)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./CD70D856-A992-4ECE-990F-3357D02CE62B.JPG" onclick="openLightbox(5)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarosconlamparaotravez1.jpg" onclick="openLightbox(6)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./2ebe491a-6e11-408e-9b80-a33a45e77691.JPG" onclick="openLightbox(7)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - March 30, 2024 09.48.jpg" onclick="openLightbox(8)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - October 11, 2024 15.30.png" onclick="openLightbox(9)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./6A7DAAE3-6F59-4F00-8E55-C582ADEB8F68.JPG" onclick="openLightbox(10)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./huevosnight1.png" onclick="openLightbox(11)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./newt.png" onclick="openLightbox(12)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaroblanco1.png" onclick="openLightbox(13)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - March 12, 2024 17.17.jpg" onclick="openLightbox(14)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./b9a30c9d-d66e-410d-887f-7b496b9586b5.JPG" onclick="openLightbox(15)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./papelitos2.jpg" onclick="openLightbox(16)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - January 14, 2024 21.01.32 copy (1).jpg" onclick="openLightbox(17)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./IMG_20220816_205145.jpg" onclick="openLightbox(18)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - August 25, 2024 18.04.png" onclick="openLightbox(19)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pescando2c.png" onclick="openLightbox(20)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - September 14, 2024 22.01.png" onclick="openLightbox(21)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./otropajaronegro1.png" onclick="openLightbox(22)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - January 13, 2024 10.42.jpg" onclick="openLightbox(23)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./dragonconpajaro.png" onclick="openLightbox(24)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./marfuegoespada.png" onclick="openLightbox(25)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarosombraotro3.jpg" onclick="openLightbox(26)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - January 17, 2024 17.22.jpg" onclick="openLightbox(27)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pesca.png" onclick="openLightbox(28)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./912e098a-3e94-417d-81fa-6c8c5f1f326d.JPG" onclick="openLightbox(29)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./marfuego.jpg" onclick="openLightbox(30)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./huevobasketv2.png" onclick="openLightbox(31)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - January 20, 2024 19.02.jpg" onclick="openLightbox(32)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./mundos.png" onclick="openLightbox(33)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - March 23, 2024 15.25.jpg" onclick="openLightbox(34)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarogiganteclose.png" onclick="openLightbox(35)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./IMG_20220822_215649~2.jpg" onclick="openLightbox(36)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./400C7F3D-0877-4451-8474-46CA7FAE400C.JPG" onclick="openLightbox(37)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./guy.png" onclick="openLightbox(38)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaroconplumas.png" onclick="openLightbox(39)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - September 7, 2024 12.44(1).png" onclick="openLightbox(40)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./4F7A1186-ED26-4030-8F4C-3D2A35B133E8.JPG" onclick="openLightbox(41)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./skates.png" onclick="openLightbox(42)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./huevotest1.png" onclick="openLightbox(43)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaropapelroto2.jpg" onclick="openLightbox(44)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./eee4f554-9110-4653-b400-edd061ce6401.JPG" onclick="openLightbox(45)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaroybolaypajaro1.png" onclick="openLightbox(46)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./luzpajaroscortado.png" onclick="openLightbox(47)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./sketch-1620012308712.png" onclick="openLightbox(48)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./maspajaroides.png" onclick="openLightbox(49)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - October 17, 2024 08.51.png" onclick="openLightbox(50)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./1a07dc30-5b7b-48d8-b6ea-feb899ccda64.JPG" onclick="openLightbox(51)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./B5CB33DF-B6A3-44B6-9A94-0E18B7ED7756.JPG" onclick="openLightbox(52)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - August 25, 2024 16.50.png" onclick="openLightbox(53)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./dospajarosdos2.png" onclick="openLightbox(54)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarobalance.png" onclick="openLightbox(55)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./robopajaros2.png" onclick="openLightbox(56)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./A16DB207-5F9C-4E12-B737-119EA2AE80A8.JPG" onclick="openLightbox(57)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./IMG-20190826-WA0000.JPG" onclick="openLightbox(58)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./EBBC0EEA-444D-49B7-AE58-15DEEFD400CF.JPG" onclick="openLightbox(59)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - March 23, 2024 12.20.jpg" onclick="openLightbox(60)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarosypiedras.png" onclick="openLightbox(61)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - October 17, 2024 18.52.png" onclick="openLightbox(62)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./torrepajaros.png" onclick="openLightbox(63)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaropajaropajaro.png" onclick="openLightbox(64)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pecesupdate.png" onclick="openLightbox(65)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - March 9, 2024 22.28.jpg" onclick="openLightbox(66)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./IMG_20220820_174925.jpg" onclick="openLightbox(67)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./otrorobopajaro2.png" onclick="openLightbox(68)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./bastogne.png" onclick="openLightbox(69)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./otrosdospajarosdosdos.png" onclick="openLightbox(70)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./dibujo4gfarf.png" onclick="openLightbox(71)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarocorreotro.png" onclick="openLightbox(72)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajaroexplora.jpg" onclick="openLightbox(73)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - August 31, 2024 21.41.png" onclick="openLightbox(74)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./gamblerrambler.png" onclick="openLightbox(75)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - October 12, 2024 15.42.png" onclick="openLightbox(76)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./Untitled - January 15, 2024 22.00.jpg" onclick="openLightbox(77)">
+<img src="../images/gallery/Drawings, Sketches, Comics etc./pajarolinea1.png" onclick="openLightbox(78)">
+</div>
+<div id="lightbox">
+    <button id="prev">&#10094;</button>
+    <img id="lightbox-img">
+    <button id="next">&#10095;</button>
+    <button id="close">&times;</button>
+</div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const images = Array.from(document.querySelectorAll('.grid img')).map(img => img.src);
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    function openLightbox(index) {{
+        currentIndex = index;
+        lightbox.style.display = 'flex';
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showNext() {{
+        currentIndex = (currentIndex + 1) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showPrev() {{
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    document.getElementById('next').onclick = showNext;
+    document.getElementById('prev').onclick = showPrev;
+    document.getElementById('close').onclick = () => lightbox.style.display = 'none';
+    window.addEventListener('keydown', e => {{
+        if(lightbox.style.display === 'flex') {{
+            if(e.key === 'ArrowRight') showNext();
+            if(e.key === 'ArrowLeft') showPrev();
+            if(e.key === 'Escape') lightbox.style.display = 'none';
+        }}
+    }});
+</script>
+</body>
+</html>

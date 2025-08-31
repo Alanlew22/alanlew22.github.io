@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>More Coloring Pages</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; }
+    h1 { text-align:center; color:#444; }
+    .grid {
+        display:grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap:10px;
+        padding:20px;
+    }
+    .grid img {
+        width:100%;
+        height:auto;
+        cursor:pointer;
+        border-radius:8px;
+        transition: transform 0.2s;
+    }
+    .grid img:hover { transform: scale(1.05); }
+    /* Lightbox */
+    #lightbox {
+        position:fixed; top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.9);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+    #lightbox img {
+        max-width:90%; max-height:80%;
+    }
+    #lightbox button {
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        background:none; border:none;
+        font-size:2em; color:white;
+        cursor:pointer;
+    }
+    #prev { left:5%; }
+    #next { right:5%; }
+    #close { top:10%; right:10%; transform:none; font-size:2em; }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+<h1>More Coloring Pages</h1>
+<div class="grid">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 30, 2025 15.20.png" onclick="openLightbox(0)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 28, 2025 20.34.43 copy.png" onclick="openLightbox(1)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 30, 2025 08.39.45 copy.png" onclick="openLightbox(2)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 26, 2025 10.33.29 copy-2.png" onclick="openLightbox(3)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 26, 2025 17.49.42 copy-2.png" onclick="openLightbox(4)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 29, 2025 02.22.37 copy-2.png" onclick="openLightbox(5)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 28, 2025 12.06.png" onclick="openLightbox(6)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 26, 2025 18.10.00 copy.png" onclick="openLightbox(7)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 28, 2025 12.06.09 copy.png" onclick="openLightbox(8)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 29, 2025 03.07.png" onclick="openLightbox(9)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 29, 2025 02.52.31 copy.png" onclick="openLightbox(10)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 26, 2025 17.49.png" onclick="openLightbox(11)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 29, 2025 03.07.22 copy.png" onclick="openLightbox(12)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 29, 2025 02.22.37 copy.png" onclick="openLightbox(13)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 26, 2025 10.33.29 copy.png" onclick="openLightbox(14)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 30, 2025 20.45.58 copy.png" onclick="openLightbox(15)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 30, 2025 20.45.png" onclick="openLightbox(16)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 28, 2025 20.34.png" onclick="openLightbox(17)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 26, 2025 18.10.00 copy-2.png" onclick="openLightbox(18)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 30, 2025 08.39.45 copy-2.png" onclick="openLightbox(19)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 30, 2025 15.20.37 copy.png" onclick="openLightbox(20)">
+<img src="../images/gallery/More Coloring Pages/thumbnail_Untitled - August 29, 2025 02.52.31 copy-2.png" onclick="openLightbox(21)">
+</div>
+<div id="lightbox">
+    <button id="prev">&#10094;</button>
+    <img id="lightbox-img">
+    <button id="next">&#10095;</button>
+    <button id="close">&times;</button>
+</div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const images = Array.from(document.querySelectorAll('.grid img')).map(img => img.src);
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    function openLightbox(index) {{
+        currentIndex = index;
+        lightbox.style.display = 'flex';
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showNext() {{
+        currentIndex = (currentIndex + 1) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showPrev() {{
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    document.getElementById('next').onclick = showNext;
+    document.getElementById('prev').onclick = showPrev;
+    document.getElementById('close').onclick = () => lightbox.style.display = 'none';
+    window.addEventListener('keydown', e => {{
+        if(lightbox.style.display === 'flex') {{
+            if(e.key === 'ArrowRight') showNext();
+            if(e.key === 'ArrowLeft') showPrev();
+            if(e.key === 'Escape') lightbox.style.display = 'none';
+        }}
+    }});
+</script>
+</body>
+</html>
