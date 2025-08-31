@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lea's Art</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; }
+    h1 { text-align:center; color:#444; }
+    .grid {
+        display:grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap:10px;
+        padding:20px;
+    }
+    .grid img {
+        width:100%;
+        height:auto;
+        cursor:pointer;
+        border-radius:8px;
+        transition: transform 0.2s;
+    }
+    .grid img:hover { transform: scale(1.05); }
+    /* Lightbox */
+    #lightbox {
+        position:fixed; top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.9);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+    #lightbox img {
+        max-width:90%; max-height:80%;
+    }
+    #lightbox button {
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        background:none; border:none;
+        font-size:2em; color:white;
+        cursor:pointer;
+    }
+    #prev { left:5%; }
+    #next { right:5%; }
+    #close { top:10%; right:10%; transform:none; font-size:2em; }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+<h1>Lea's Art</h1>
+<div class="grid">
+<img src="../images/gallery/Lea's Art/IMG_2978.JPG" onclick="openLightbox(0)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1523272220536.JPG" onclick="openLightbox(1)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201392281.JPG" onclick="openLightbox(2)">
+<img src="../images/gallery/Lea's Art/07B8E126-6690-44EC-84BE-BAF091FAF4C7.jpeg" onclick="openLightbox(3)">
+<img src="../images/gallery/Lea's Art/D21803F6-1616-4FD0-BF42-EEBE08C5EAAB.PNG" onclick="openLightbox(4)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201369185.JPG" onclick="openLightbox(5)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201277422.JPG" onclick="openLightbox(6)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201320550.JPG" onclick="openLightbox(7)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201320550 2.jpg" onclick="openLightbox(8)">
+<img src="../images/gallery/Lea's Art/IMG_1786.JPG" onclick="openLightbox(9)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1546859450563.JPG" onclick="openLightbox(10)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201362465.JPG" onclick="openLightbox(11)">
+<img src="../images/gallery/Lea's Art/066262D0-8A5F-4953-AACF-4A3A395F02E7.JPG" onclick="openLightbox(12)">
+<img src="../images/gallery/Lea's Art/B53F8E5E-7890-4AC7-A5FF-564964A6736C.JPG" onclick="openLightbox(13)">
+<img src="../images/gallery/Lea's Art/BC6DFBC5-78C8-487E-938E-3A55AA60950E.PNG" onclick="openLightbox(14)">
+<img src="../images/gallery/Lea's Art/IMG_4599.JPG" onclick="openLightbox(15)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1523272231886.JPG" onclick="openLightbox(16)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201403624.JPG" onclick="openLightbox(17)">
+<img src="../images/gallery/Lea's Art/879C547C-7ECE-4805-B0A2-B2847AE2A20F_1_105_c.jpeg" onclick="openLightbox(18)">
+<img src="../images/gallery/Lea's Art/FBC37C90-61BC-490D-9DC3-3742095657B3.JPG" onclick="openLightbox(19)">
+<img src="../images/gallery/Lea's Art/777FA3F9-7D87-440C-9324-520BC1C40BD6_1_105_c.jpeg" onclick="openLightbox(20)">
+<img src="../images/gallery/Lea's Art/22D130A3-977F-44BE-A8D8-BA688D2DE9E8.jpeg" onclick="openLightbox(21)">
+<img src="../images/gallery/Lea's Art/184DA99C-A588-414D-BEC5-DE01DF8C6B5C_1_105_c.jpeg" onclick="openLightbox(22)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201358858.JPG" onclick="openLightbox(23)">
+<img src="../images/gallery/Lea's Art/download_20170612_105618.JPG" onclick="openLightbox(24)">
+<img src="../images/gallery/Lea's Art/IMG_2678.JPG" onclick="openLightbox(25)">
+<img src="../images/gallery/Lea's Art/sketch-1572717533800.JPG" onclick="openLightbox(26)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201271511.JPG" onclick="openLightbox(27)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1546859435970.JPG" onclick="openLightbox(28)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201283584.JPG" onclick="openLightbox(29)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201317330.JPG" onclick="openLightbox(30)">
+<img src="../images/gallery/Lea's Art/IMG_2423.JPG" onclick="openLightbox(31)">
+<img src="../images/gallery/Lea's Art/DCCEEA5D-55C7-4A33-ACEB-73D500908E06.jpeg" onclick="openLightbox(32)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201249305.JPG" onclick="openLightbox(33)">
+<img src="../images/gallery/Lea's Art/IMG_2422.JPG" onclick="openLightbox(34)">
+<img src="../images/gallery/Lea's Art/guinie12345.png" onclick="openLightbox(35)">
+<img src="../images/gallery/Lea's Art/CFA7B1F8-7189-4E82-88C7-9122E0685679.jpeg" onclick="openLightbox(36)">
+<img src="../images/gallery/Lea's Art/2bfc4847-e9c9-4499-90af-93c7db1489a3.JPG" onclick="openLightbox(37)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201305268.JPG" onclick="openLightbox(38)">
+<img src="../images/gallery/Lea's Art/received_1715294661847419.JPEG" onclick="openLightbox(39)">
+<img src="../images/gallery/Lea's Art/3D08C404-6A09-4BD3-8DBB-61FCAD3D58C0.jpeg" onclick="openLightbox(40)">
+<img src="../images/gallery/Lea's Art/FB_IMG_1545201289697.JPG" onclick="openLightbox(41)">
+<img src="../images/gallery/Lea's Art/IMG_2424.JPG" onclick="openLightbox(42)">
+</div>
+<div id="lightbox">
+    <button id="prev">&#10094;</button>
+    <img id="lightbox-img">
+    <button id="next">&#10095;</button>
+    <button id="close">&times;</button>
+</div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const images = Array.from(document.querySelectorAll('.grid img')).map(img => img.src);
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    function openLightbox(index) {{
+        currentIndex = index;
+        lightbox.style.display = 'flex';
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showNext() {{
+        currentIndex = (currentIndex + 1) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    function showPrev() {{
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }}
+    document.getElementById('next').onclick = showNext;
+    document.getElementById('prev').onclick = showPrev;
+    document.getElementById('close').onclick = () => lightbox.style.display = 'none';
+    window.addEventListener('keydown', e => {{
+        if(lightbox.style.display === 'flex') {{
+            if(e.key === 'ArrowRight') showNext();
+            if(e.key === 'ArrowLeft') showPrev();
+            if(e.key === 'Escape') lightbox.style.display = 'none';
+        }}
+    }});
+</script>
+</body>
+</html>
