@@ -7,7 +7,8 @@
     body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; text-align:center; }
     h1 { color:#444; }
     select { margin:20px; padding:10px; font-size:16px; }
-    iframe { width:80%; height:80vh; border:1px solid #ccc; border-radius:8px; }
+    #pdfViewer { width:80%; height:80vh; border:1px solid #ccc; border-radius:8px; margin:auto; display:block; }
+    canvas { width:100%; height:auto; border-radius:8px; }
     .back {
         display:block;
         text-align:center;
@@ -20,6 +21,7 @@
         text-decoration:none;
     }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 <body>
 <h1>Comics</h1>
@@ -34,16 +36,34 @@
 <option value="../images/gallery/Comics/robot.pdf">robot.pdf</option>
 <option value="../images/gallery/Comics/alas.pdf">alas.pdf</option>
 <option value="../images/gallery/Comics/Barrel.pdf">Barrel.pdf</option></select>
-<div>
-    <iframe id="pdfViewer" src="../images/gallery/Comics/dog.pdf"></iframe>
-</div>
+<div id="pdfViewer"></div>
 <div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
 <script>
+    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
     const select = document.getElementById('pdfSelect');
-    const viewer = document.getElementById('pdfViewer');
-    select.onchange = () => {
-        viewer.src = select.value;
-    };
+    const container = document.getElementById('pdfViewer');
+
+    function renderPDF(url) {
+        container.innerHTML = ""; // clear old pages
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            for (let i = 1; i <= pdf.numPages; i++) {
+                pdf.getPage(i).then(page => {
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    container.appendChild(canvas);
+                    page.render({ canvasContext: context, viewport: viewport });
+                });
+            }
+        });
+    }
+
+    select.onchange = () => renderPDF(select.value);
+    renderPDF(select.value); // load first
 </script>
 </body>
 </html>
