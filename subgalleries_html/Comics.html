@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Comics</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; text-align:center; }
+    h1 { color:#444; }
+    select { margin:20px; padding:10px; font-size:16px; }
+    iframe { width:80%; height:80vh; border:1px solid #ccc; border-radius:8px; }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+<h1>Comics</h1>
+<select id="pdfSelect"><option value="../images/gallery/Comics/dog.pdf">dog.pdf</option>
+<option value="../images/gallery/Comics/desert.pdf">desert.pdf</option>
+<option value="../images/gallery/Comics/eater.pdf">eater.pdf</option>
+<option value="../images/gallery/Comics/the sphere.pdf">the sphere.pdf</option>
+<option value="../images/gallery/Comics/orb maker.pdf">orb maker.pdf</option>
+<option value="../images/gallery/Comics/birds in space.pdf">birds in space.pdf</option>
+<option value="../images/gallery/Comics/sword.pdf">sword.pdf</option>
+<option value="../images/gallery/Comics/Bluebird.pdf">Bluebird.pdf</option>
+<option value="../images/gallery/Comics/robot.pdf">robot.pdf</option>
+<option value="../images/gallery/Comics/alas.pdf">alas.pdf</option>
+<option value="../images/gallery/Comics/Barrel.pdf">Barrel.pdf</option></select>
+<div>
+    <iframe id="pdfViewer" src="../images/gallery/Comics/dog.pdf"></iframe>
+</div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const select = document.getElementById('pdfSelect');
+    const viewer = document.getElementById('pdfViewer');
+    select.onchange = () => {
+        viewer.src = select.value;
+    };
+</script>
+</body>
+</html>
