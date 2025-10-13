@@ -7,8 +7,23 @@
     body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; text-align:center; }
     h1 { color:#444; }
     select { margin:20px; padding:10px; font-size:16px; }
-    #pdfViewer { width:80%; height:80vh; border:1px solid #ccc; border-radius:8px; margin:auto; display:block; }
-    canvas { width:100%; height:auto; border-radius:8px; }
+    #pdfViewer {
+        width:80%;
+        margin:0 auto;
+        border:1px solid #ccc;
+        border-radius:8px;
+        padding:10px;
+        background:white;
+        overflow:auto;
+        max-height:80vh;
+    }
+    canvas {
+        display:block;
+        max-width:100%;
+        height:auto;
+        margin:0 auto 10px;
+        border-radius:8px;
+    }
     .back {
         display:block;
         text-align:center;
@@ -48,13 +63,17 @@
     function renderPDF(url) {
         container.innerHTML = ""; // clear old pages
         pdfjsLib.getDocument(url).promise.then(pdf => {
+            const scale = 1.0; // base rendering scale
+            const containerWidth = container.clientWidth;
             for (let i = 1; i <= pdf.numPages; i++) {
                 pdf.getPage(i).then(page => {
-                    const viewport = page.getViewport({ scale: 1.5 });
+                    const unscaledViewport = page.getViewport({ scale: 1.0 });
+                    const scaleFactor = containerWidth / unscaledViewport.width;
+                    const viewport = page.getViewport({ scale: scale * scaleFactor });
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
                     canvas.width = viewport.width;
+                    canvas.height = viewport.height;
                     container.appendChild(canvas);
                     page.render({ canvasContext: context, viewport: viewport });
                 });
@@ -63,6 +82,7 @@
     }
 
     select.onchange = () => renderPDF(select.value);
+    window.addEventListener('resize', () => renderPDF(select.value));
     renderPDF(select.value); // load first
 </script>
 </body>
