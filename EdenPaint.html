@@ -1,125 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eden Paint App</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-    }
-    canvas {
-      border: 1px solid black;
-      touch-action: none;
-    }
-    #controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 10px;
-    }
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  .active-tool {
-    border: 2px solid red;
-  }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paint Growth App</title>
+<style>
+  body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 0; }
+  /* prevent text selection during outside-drag */
+  html, body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+  canvas { border: 1px solid black; touch-action: none; }
+  #controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px; }
+  .control-group { display: flex; flex-direction: column; align-items: center; }
+  .active-tool { border: 2px solid red; }
+  .slider-row { display: flex; align-items: center; gap: 6px; }
+  .slider-row input[type="number"] { width: 70px; }
+</style>
 </head>
 <body>
 
-<div id="newDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
- background:white; border:1px solid black; padding:1em; z-index:1000;">
-  <label>Canvas Width: <input id="newWidth" type="number" value="300" /></label><br/>
-  <label>Canvas Height: <input id="newHeight" type="number" value="300" /></label><br/>
-  <button onclick="confirmNewDrawing()">OK</button>
-  <button onclick="hideNewDialog()">Cancel</button>
-</div>
-
-<div id="resetDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
- background:white; border:1px solid black; padding:1em; z-index:1000;">
-  <p>Are you sure you want to erase canvas?</p>
-  <button onclick="confirmReset()">Yes</button>
-  <button onclick="hideResetDialog()">No</button>
-</div>
-
-<div id="removeTapeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);  align-items:center; justify-content:center; z-index:1000;">
-  <div style="background:#fff; padding:20px; border-radius:8px; text-align:center;">
-    <p>Are you sure you want to remove all tape?</p>
-    <button onclick="proceedRemoveTape()">Yes</button>
-    <button onclick="closeRemoveTapeModal()">Cancel</button>
+  <div id="newDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);  background:white; border:1px solid black; padding:1em; z-index:1000;">
+    <label>Canvas Width: <input id="newWidth" type="number" value="2200" /></label><br/>
+    <label>Canvas Height: <input id="newHeight" type="number" value="1650" /></label><br/>
+    <button onclick="confirmNewDrawing()">OK</button>
+    <button onclick="hideNewDialog()">Cancel</button>
   </div>
-</div>
 
-<div id="saveDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
- background:white; border:1px solid black; padding:1em; z-index:1000;">
-  <label>Filename (without .png): <input id="saveFilename" type="text" value="my_drawing" /></label><br/><br/>
-  <button onclick="confirmSave()">Save</button>
-  <button onclick="hideSaveDialog()">Cancel</button>
-</div>
+  <div id="resetDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);  background:white; border:1px solid black; padding:1em; z-index:1000;">
+    <p>Are you sure you want to erase canvas?</p>
+    <button onclick="confirmReset()">Yes</button>
+    <button onclick="hideResetDialog()">No</button>
+  </div>
+
+  <div id="removeTapeModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
+    <div style="background:#fff; padding:20px; border-radius:8px; text-align:center;">
+      <p>Are you sure you want to remove all tape?</p>
+      <button onclick="proceedRemoveTape()">Yes</button>
+      <button onclick="closeRemoveTapeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <div id="saveDialog" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);  background:white; border:1px solid black; padding:1em; z-index:1000;">
+    <label>Filename (without .png): <input id="saveFilename" type="text" value="my_drawing" /></label><br/><br/>
+    <button onclick="confirmSave()">Save</button>
+    <button onclick="hideSaveDialog()">Cancel</button>
+  </div>
 
   <div id="controls">
     <div class="control-group">
       <label>Brush Size</label>
-      <input type="range" id="brushSize" min="1" max="40" value="1">
+      <div class="slider-row">
+        <input type="range" id="brushSize" min="1" max="300" value="1">
+        <input id="brushSizeNumber" type="number" min="1" max="300" value="1">
+      </div>
     </div>
+
     <div class="control-group">
       <label>Color</label>
       <input type="color" id="colorPicker" value="#000000">
     </div>
+
     <button id="brushBtn" onclick="setTool('brush')">Brush</button>
     <button id="eraserBtn" onclick="setTool('eraser')">Eraser</button>
-     <button id="pickerBtn" onclick="setTool('picker')">Color Picker</button>
+    <button id="pickerBtn" onclick="setTool('picker')">Color Picker</button>
     <button id="tapeBtn" onclick="setTool('tape')">Tape</button>
     <button onclick="confirmRemoveTape()">Remove Tape</button>
+
     <div class="control-group">
       <label>Color Perturbation</label>
-      <input type="range" id="colorPerturbation" min="0" max="30" value="10">
+      <div class="slider-row">
+        <input type="range" id="colorPerturbation" min="0" max="30" value="3">
+        <input id="colorPerturbationNumber" type="number" min="0" max="30" value="3">
+      </div>
     </div>
+
     <div class="control-group">
       <label>Growth Speed</label>
-      <input type="range" id="growthSpeed" min="1" max="5000" value="3000">
+      <div class="slider-row">
+        <input type="range" id="growthSpeed" min="1" max="15000" value="5000">
+        <input id="growthSpeedNumber" type="number" min="1" max="15000" value="5000">
+      </div>
     </div>
+
     <button id="growthButton" onclick="toggleGrowth()">Toggle Growth</button>
     <button onclick="newDrawing()">New Drawing</button>
     <button onclick="showSaveDialog()">Save</button>
     <button onclick="loadDrawing()">Load</button>
+    <button onclick="loadBWDrawing()">Load B/W</button>
+    <button onclick="tapeToColor()">Tape → Color</button>
     <button onclick="resetCanvas()">Reset</button>
-<button onclick="undo()">Undo</button>
-<button onclick="redo()">Redo</button>
+    <button onclick="undo()">Undo</button>
+    <button onclick="redo()">Redo</button>
   </div>
+
   <canvas id="canvas" width="1102" height="852"></canvas>
-  <input type="file" id="fileInput" style="display:none" />
+  <input type="file" id="fileInput" style="display:none" accept="image/*" />
+  <input type="file" id="bwFileInput" style="display:none" accept="image/*" />
 
-  <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
-    let tool = 'brush';
-    const TAPE_COLOR = '#444444';
-    const EMPTY_COLOR = '#CCCCCC';
-    let brushSize = 1;
-    let isDrawing = false;
-    let growthRunning = false;
-    let growthInterval;
+<script>
+/* ----------- constants & basic state ----------- */
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
 
+let tool = 'brush';
+const TAPE_COLOR = '#444444';
+const EMPTY_COLOR = '#CCCCCC';
 
+let brushSize = 5;
+let isDrawing = false;
+let growthRunning = false;
+let growthInterval;
 
 let history = [];
 let redoStack = [];
 
+/* ---------- NEW: outside-press tracking (minimal additional state) ---------- */
+// pointerDownAnywhere: is pointer currently down anywhere on page?
+// pointerDownStart: starting client coordinates of the pointerdown
+// armedFromOutside: true if pointerdown started outside the canvas and is ready to begin drawing when entering canvas
+let pointerDown = false; // tracks whether pointer is pressed anywhere
+let lastInsideX = null, lastInsideY = null; // last point inside canvas for interpolation
+
+
+
+/* ----------- updated handleDraw to clamp & maintain lastInsideX/Y ----------- */
+function handleDraw(e, forceStart=false) {
+  const rect = canvas.getBoundingClientRect();
+  const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX);
+  const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY);
+  if (clientX === undefined || clientY === undefined) return;
+
+  // Clamp to canvas coordinates
+  const x = clamp(clientX - rect.left, 0, canvas.width - 1);
+  const y = clamp(clientY - rect.top, 0, canvas.height - 1);
+
+  let color = document.getElementById('colorPicker').value;
+  if (tool === 'eraser') color = EMPTY_COLOR;
+  if (tool === 'tape') color = TAPE_COLOR;
+
+  if (tool === 'picker') {
+    const hex = getColor(x, y);
+    document.getElementById('colorPicker').value = hex;
+    lastInsideX = lastInsideY = null; // picker doesn't continue stroke
+  } else {
+    if (lastInsideX !== null && lastInsideY !== null && !forceStart) {
+      drawLineInterpolated(lastInsideX, lastInsideY, x, y, color);
+    } else {
+      draw(x, y, color);
+    }
+    lastInsideX = x;
+    lastInsideY = y;
+  }
+}
+
+/* ----------- history (unchanged) ----------- */
 function saveHistory() {
-  // Cap history size if needed
   if (history.length > 100) history.shift();
   history.push(canvas.toDataURL());
-  redoStack = []; // clear redo on new action
+  redoStack = [];
 }
 
 function undo() {
@@ -147,15 +185,15 @@ function redo() {
   }
 }
 
-    function setTool(selected) {
-      tool = selected;
+/* ----------- tools UI highlight ----------- */
+function setTool(selected) {
+  tool = selected;
 
   document.getElementById("brushBtn").classList.remove("active-tool");
   document.getElementById("eraserBtn").classList.remove("active-tool");
   document.getElementById("tapeBtn").classList.remove("active-tool");
   document.getElementById("pickerBtn").classList.remove("active-tool");
 
-  // Highlight selected tool
   if (tool === "brush") {
     document.getElementById("brushBtn").classList.add("active-tool");
   } else if (tool === "eraser") {
@@ -164,27 +202,99 @@ function redo() {
     document.getElementById("tapeBtn").classList.add("active-tool");
   } else if (tool === "picker") {
     document.getElementById("pickerBtn").classList.add("active-tool");
-    }
+  }
 }
 
+/* ----------- drawing primitives (fixed & centered) ----------- */
 function draw(x, y, color) {
+  // center the square on (x,y)
+  const size = Math.max(1, Math.round(brushSize));
+  // convert to canvas coordinates (floors are fine)
+  const px = Math.floor(x - size / 2);
+  const py = Math.floor(y - size / 2);
   ctx.fillStyle = color;
-  const px = Math.floor(x);
-  const py = Math.floor(y);
-  const size = brushSize;
+  // fillRect accepts negative coords and will clip to canvas — desired behavior
   ctx.fillRect(px, py, size, size);
 }
 
-    function getColor(x, y) {
-      const data = ctx.getImageData(x, y, 1, 1).data;
-      return `#${[data[0], data[1], data[2]].map(c => c.toString(16).padStart(2, '0')).join('')}`;
+/* safe getColor (returns hex string like '#rrggbb') */
+function rgbToHex(r,g,b){
+  return '#' + [r,g,b].map(c => c.toString(16).padStart(2,'0')).join('').toLowerCase();
+}
+
+function clamp(val, a, b) { return Math.max(a, Math.min(b, val)); }
+
+/* ----------- coordinate helpers (improved scaling & client extraction) ---------- */
+function getClientFromEvent(e) {
+  if (e.touches && e.touches[0]) {
+    return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+  } else if (e.changedTouches && e.changedTouches[0]) {
+    return { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY };
+  } else {
+    return { clientX: e.clientX, clientY: e.clientY };
+  }
+}
+
+// convert client coords to canvas pixel coords (handles CSS scaling)
+function clientToCanvas(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (clientX - rect.left) * (canvas.width / rect.width);
+  const y = (clientY - rect.top) * (canvas.height / rect.height);
+  return { x, y };
+}
+
+/* ----------- Liang-Barsky for segment-rect clipping (used to find entry point) ----------- */
+function segmentRectIntersection(x0, y0, x1, y1, rx0, ry0, rx1, ry1) {
+  // returns null or {x,y,tEnter}
+  let t0 = 0, t1 = 1;
+  const dx = x1 - x0, dy = y1 - y0;
+  const checks = [
+    { p: -dx, q: x0 - rx0 }, // left
+    { p: dx,  q: rx1 - x0 }, // right
+    { p: -dy, q: y0 - ry0 }, // top
+    { p: dy,  q: ry1 - y0 }  // bottom
+  ];
+  for (const c of checks) {
+    const p = c.p, q = c.q;
+    if (Math.abs(p) < 1e-9) {
+      if (q < 0) return null; // line parallel and outside
+    } else {
+      const r = q / p;
+      if (p < 0) {
+        // entering
+        if (r > t1) return null;
+        if (r > t0) t0 = r;
+      } else {
+        // leaving
+        if (r < t0) return null;
+        if (r < t1) t1 = r;
+      }
     }
+  }
+  // t0 is the entering parameter (if the segment intersects)
+  if (t0 <= t1) {
+    const ix = x0 + dx * t0;
+    const iy = y0 + dy * t0;
+    return { x: ix, y: iy, tEnter: t0 };
+  }
+  return null;
+}
 
-    function isColorEqual(c1, c2) {
-      return c1.toLowerCase() === c2.toLowerCase();
-    }
+/* ----------- getColor uses client->canvas conversion ---------- */
+function getColor(xClient, yClient) {
+  const p = clientToCanvas(xClient, yClient);
+  const ix = clamp(Math.floor(p.x), 0, canvas.width - 1);
+  const iy = clamp(Math.floor(p.y), 0, canvas.height - 1);
+  const data = ctx.getImageData(ix, iy, 1, 1).data;
+  return rgbToHex(data[0], data[1], data[2]);
+}
 
+/* case-insensitive hex compare */
+function isColorEqual(c1, c2) {
+  return (c1 || '').toLowerCase() === (c2 || '').toLowerCase();
+}
 
+/* ----------- tape removal (unchanged logic but more robust compare) ----------- */
 function confirmRemoveTape() {
   document.getElementById("removeTapeModal").style.display = "flex";
 }
@@ -198,37 +308,37 @@ function closeRemoveTapeModal() {
   document.getElementById("removeTapeModal").style.display = "none";
 }
 
-    function removeTape() {
-
-      const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < img.data.length; i += 4) {
-        const r = img.data[i], g = img.data[i + 1], b = img.data[i + 2];
-        const hex = `#${[r, g, b].map(c => c.toString(16).padStart(2, '0')).join('')}`;
-        if (isColorEqual(hex, TAPE_COLOR)) {
-          img.data[i] = 204; img.data[i + 1] = 204; img.data[i + 2] = 204;
-        }
-      }
-      ctx.putImageData(img, 0, 0);
-      saveHistory();
+function removeTape() {
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const r = img.data[i], g = img.data[i + 1], b = img.data[i + 2];
+    const hex = rgbToHex(r, g, b);
+    if (isColorEqual(hex, TAPE_COLOR)) {
+      img.data[i] = 204; img.data[i + 1] = 204; img.data[i + 2] = 204;
     }
+  }
+  ctx.putImageData(img, 0, 0);
+  saveHistory();
+}
 
-    function newDrawing() {
+/* ----------- new / save / load (unchanged except small fixes) ----------- */
+function newDrawing() {
   document.getElementById('newDialog').style.display = 'block';
 }
 
 function confirmNewDrawing() {
   const w = parseInt(document.getElementById('newWidth').value);
   const h = parseInt(document.getElementById('newHeight').value);
-  canvas.width = w+2;
-  canvas.height = h+2;
+  // maintain the 1px border trick as in original
+  canvas.width = w + 2;
+  canvas.height = h + 2;
   ctx.fillStyle = EMPTY_COLOR;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   document.getElementById('newDialog').style.display = 'none';
-history = [];
-redoStack = [];
-saveHistory();
+  history = [];
+  redoStack = [];
+  saveHistory();
 }
-
 
 function showSaveDialog() {
   const dialog = document.getElementById('saveDialog');
@@ -248,18 +358,16 @@ function confirmSave() {
 }
 
 function saveDrawing(name = 'drawing') {
+  const croppedCanvas = document.createElement('canvas');
+  croppedCanvas.width = canvas.width - 2;
+  croppedCanvas.height = canvas.height - 2;
 
-
-const croppedCanvas = document.createElement('canvas');
-croppedCanvas.width = canvas.width-2;
-croppedCanvas.height = canvas.height-2;
-
-const croppedCtx = croppedCanvas.getContext('2d');
-croppedCtx.drawImage(
-  canvas,
-  1, 1, canvas.width-2,canvas.height-2,  // source area
-  0, 0, canvas.width-2, canvas.height-2   // destination
-);
+  const croppedCtx = croppedCanvas.getContext('2d');
+  croppedCtx.drawImage(
+    canvas,
+    1, 1, canvas.width - 2, canvas.height - 2, // source area
+    0, 0, canvas.width - 2, canvas.height - 2 // destination
+  );
   const data = croppedCanvas.toDataURL();
   const a = document.createElement('a');
   a.href = data;
@@ -269,31 +377,115 @@ croppedCtx.drawImage(
   document.body.removeChild(a);
 }
 
-    function loadDrawing() {
-      const input = document.getElementById('fileInput');
-      input.click();
-      input.onchange = function () {
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = new Image();
-          img.onload = function () {
-            canvas.width = img.width+2;
-            canvas.height = img.height+2;
- ctx.fillStyle = EMPTY_COLOR;
+function loadDrawing() {
+  const input = document.getElementById('fileInput');
+  input.value = ''; // reset
+  input.click();
+  input.onchange = function () {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onload = function () {
+        canvas.width = img.width + 2;
+        canvas.height = img.height + 2;
+        ctx.fillStyle = EMPTY_COLOR;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 1, 1);
-history = [];
-redoStack = [];
-saveHistory();
+        ctx.drawImage(img, 1, 1);
+        history = [];
+        redoStack = [];
+        saveHistory();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+}
+
+/* ----------- Load B/W: convert to strict B/W then map black->TAPE_COLOR white->EMPTY_COLOR ----------- */
+function loadBWDrawing() {
+  const input = document.getElementById('bwFileInput');
+  input.value = '';
+  input.click();
+  input.onchange = function () {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onload = function () {
+        // new canvas size as before: +2 border
+        canvas.width = img.width + 2;
+        canvas.height = img.height + 2;
+        // draw to an offscreen canvas to access pixels
+        const off = document.createElement('canvas');
+        off.width = img.width;
+        off.height = img.height;
+        const offCtx = off.getContext('2d');
+        offCtx.drawImage(img, 0, 0);
+        const imgdata = offCtx.getImageData(0, 0, img.width, img.height);
+        const d = imgdata.data;
+
+        // Decide threshold: map "close to black" -> black, "close to white" -> white.
+        // We'll use luminance threshold 128.
+        for (let i = 0; i < d.length; i += 4) {
+          const r = d[i], g = d[i + 1], b = d[i + 2];
+          // luminance (rec. 601)
+          const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+          if (lum < 128) {
+            // black -> paint as TAPE_COLOR
+            const rgb = hexToRgb(TAPE_COLOR);
+            d[i] = rgb.r; d[i + 1] = rgb.g; d[i + 2] = rgb.b; d[i + 3] = 255;
+          } else {
+            // white -> paint as EMPTY_COLOR
+            const rgb = hexToRgb(EMPTY_COLOR);
+            d[i] = rgb.r; d[i + 1] = rgb.g; d[i + 2] = rgb.b; d[i + 3] = 255;
           }
-          img.src = e.target.result;
         }
-        reader.readAsDataURL(file);
-      }
 
+        // put transformed image into the real canvas at (1,1)
+        ctx.fillStyle = EMPTY_COLOR;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        offCtx.putImageData(imgdata, 0, 0);
+        ctx.drawImage(off, 1, 1);
+        history = [];
+        redoStack = [];
+        saveHistory();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+}
+
+/* helper hex -> rgb */
+function hexToRgb(hex) {
+  if (hex.startsWith('#')) hex = hex.slice(1);
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  const num = parseInt(hex, 16);
+  return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+}
+
+/* Tape -> Color: replace TAPE_COLOR pixels with colorPicker's value */
+function tapeToColor() {
+  const colorHex = document.getElementById('colorPicker').value;
+  const target = hexToRgb(TAPE_COLOR);
+  const replacement = hexToRgb(colorHex);
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < img.data.length; i += 4) {
+    if (img.data[i] === target.r && img.data[i + 1] === target.g && img.data[i + 2] === target.b) {
+      img.data[i] = replacement.r;
+      img.data[i + 1] = replacement.g;
+      img.data[i + 2] = replacement.b;
+      img.data[i + 3] = 255;
     }
+  }
+  ctx.putImageData(img, 0, 0);
+  saveHistory();
+}
 
+/* ----------- reset / growth code (mostly unchanged) ----------- */
 function resetCanvas() {
   document.getElementById('resetDialog').style.display = 'block';
 }
@@ -305,133 +497,105 @@ function confirmReset() {
   saveHistory();
 }
 
-function hideNewDialog() {
-  document.getElementById('newDialog').style.display = 'none';
-}
+function hideNewDialog() { document.getElementById('newDialog').style.display = 'none'; }
+function hideResetDialog() { document.getElementById('resetDialog').style.display = 'none'; }
 
-function hideResetDialog() {
-  document.getElementById('resetDialog').style.display = 'none';
-}
-
-
-
-    function toggleGrowth() {
-          
-      if (growthRunning) {
-        saveHistory();
-        clearInterval(growthInterval);
-      } else {
-    
-        growthInterval = setInterval(grow, 10);
-      }
-      growthRunning = !growthRunning;
-    const btn = document.getElementById('growthButton');
-btn.textContent = growthRunning ? "Stop Growth" : "Start Growth";
-btn.style.backgroundColor = growthRunning ? "red" : "lightgreen";
-    }
-
-    function grow() {
-      const perturb = +document.getElementById('colorPerturbation').value;
-      const speed = +document.getElementById('growthSpeed').value;
-     
-      const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = img.data;
-      const width = canvas.width;
-
-      let boundary = [];
-
-      function index(x, y) {
-        return 4 * (y * width + x);
-      }
-
-      function colorAt(i) {
-        return [data[i], data[i + 1], data[i + 2]];
-      }
-
-      function isEmpty(i) {
-        return data[i] === 204 && data[i + 1] === 204 && data[i + 2] === 204;
-      }
-
-      function isTape(i) {
-        return data[i] === 68 && data[i + 1] === 68 && data[i + 2] === 68;
-      }
-
-      for (let y = 1; y < canvas.height-1 ; y++) {
-        for (let x = 1; x < canvas.width-1 ; x++) {
-          const i = index(x, y);
-          if (!isEmpty(i)) continue;
-          let neighbors = [index(x+1,y), index(x-1,y), index(x,y+1), index(x,y-1)];
-          if (neighbors.some(n => !isEmpty(n) && !isTape(n))) {
-            boundary.push({x, y, i});
-          }
-        }
-      }
-
-      for (let step = 0; step < speed; step++) {
-          if (boundary.length === 0) break;
-        const b = boundary.splice(Math.floor(Math.random() * boundary.length), 1)[0];
-// Get colored neighbors
-let nIdx = [index(b.x+1,b.y), index(b.x-1,b.y), index(b.x,b.y+1), index(b.x,b.y-1)]
-  .filter(i => !isEmpty(i) && !isTape(i));
-if (!nIdx.length) continue;
-
-// Pick a neighbor to copy color from
-const ni = nIdx[Math.floor(Math.random() * nIdx.length)];
-let [r, g, b_] = colorAt(ni);
-
-// Apply color perturbation
-r = Math.min(255, Math.max(0, r + Math.round((Math.random() - 0.5) * perturb)));
-g = Math.min(255, Math.max(0, g + Math.round((Math.random() - 0.5) * perturb)));
-b_ = Math.min(255, Math.max(0, b_ + Math.round((Math.random() - 0.5) * perturb)));
-
-const i = b.i;
-data[i] = r; data[i+1] = g; data[i+2] = b_; data[i+3] = 255;
-
-// Update boundary: add empty neighbors of newly colored pixel
-const neighbors = [
-  {x: b.x+1, y: b.y},
-  {x: b.x-1, y: b.y},
-  {x: b.x, y: b.y+1},
-  {x: b.x, y: b.y-1}
-];
-for (const n of neighbors) {
-  const ni = index(n.x, n.y);
-  if ( (isEmpty(ni)) && (n.x< canvas.width-1) && (n.y < canvas.height-1) && (n.x>0) && (n.y>0)){
-    boundary.push({x: n.x, y: n.y, i: ni});
+function toggleGrowth() {
+  if (growthRunning) {
+    saveHistory();
+    clearInterval(growthInterval);
+  } else {
+    growthInterval = setInterval(grow, 10);
   }
+  growthRunning = !growthRunning;
+  const btn = document.getElementById('growthButton');
+  btn.textContent = growthRunning ? "Stop Growth" : "Start Growth";
+  btn.style.backgroundColor = growthRunning ? "red" : "lightgreen";
 }
+
+function grow() {
+  const perturb = +document.getElementById('colorPerturbation').value;
+  const speed = +document.getElementById('growthSpeed').value;
+
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = img.data;
+  const width = canvas.width;
+
+  let boundary = [];
+
+  function index(x, y) { return 4 * (y * width + x); }
+  function colorAt(i) { return [data[i], data[i + 1], data[i + 2]]; }
+  function isEmpty(i) { return data[i] === 204 && data[i + 1] === 204 && data[i + 2] === 204; }
+  function isTape(i) { return data[i] === 68 && data[i + 1] === 68 && data[i + 2] === 68; }
+
+  for (let y = 1; y < canvas.height - 1; y++) {
+    for (let x = 1; x < canvas.width - 1; x++) {
+      const i = index(x, y);
+      if (!isEmpty(i)) continue;
+      let neighbors = [index(x + 1, y), index(x - 1, y), index(x, y + 1), index(x, y - 1)];
+      if (neighbors.some(n => !isEmpty(n) && !isTape(n))) {
+        boundary.push({ x, y, i });
       }
-      ctx.putImageData(img, 0, 0);
     }
+  }
 
+  for (let step = 0; step < speed; step++) {
+    if (boundary.length === 0) break;
+    const b = boundary.splice(Math.floor(Math.random() * boundary.length), 1)[0];
+    // Get colored neighbors
+    let nIdx = [index(b.x + 1, b.y), index(b.x - 1, b.y), index(b.x, b.y + 1), index(b.x, b.y - 1)]
+      .filter(i => !isEmpty(i) && !isTape(i));
+    if (!nIdx.length) continue;
 
+    const ni = nIdx[Math.floor(Math.random() * nIdx.length)];
+    let [r, g, b_] = colorAt(ni);
 
-function getPixelColor(x, y) {
-  const pixel = ctx.getImageData(x, y, 1, 1).data;
-  const r = pixel[0];
-  const g = pixel[1];
-  const b = pixel[2];
-  const a = pixel[3] / 255;
-  return `rgba(${r},${g},${b},${a})`;
+    r = Math.min(255, Math.max(0, r + Math.round((Math.random() - 0.5) * perturb)));
+    g = Math.min(255, Math.max(0, g + Math.round((Math.random() - 0.5) * perturb)));
+    b_ = Math.min(255, Math.max(0, b_ + Math.round((Math.random() - 0.5) * perturb)));
+
+    const i = b.i;
+    data[i] = r; data[i + 1] = g; data[i + 2] = b_; data[i + 3] = 255;
+
+    const neighbors = [
+      { x: b.x + 1, y: b.y },
+      { x: b.x - 1, y: b.y },
+      { x: b.x, y: b.y + 1 },
+      { x: b.x, y: b.y - 1 }
+    ];
+    for (const n of neighbors) {
+      const ni = index(n.x, n.y);
+      if ((isEmpty(ni)) && (n.x < canvas.width - 1) && (n.y < canvas.height - 1) && (n.x > 0) && (n.y > 0)) {
+        boundary.push({ x: n.x, y: n.y, i: ni });
+      }
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+/* ----------- picker helpers: getPixelColor was broken; we'll use getColor directly ----------- */
+function getPixelColor(clientX, clientY) {
+  const hex = getColor(clientX, clientY);
+  // Convert hex to rgba string for compatibility with earlier code paths
+  const rgb = hexToRgb(hex);
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},1)`;
 }
 
 function rgbaToHex(col) {
-  const result = col.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-  if (!result) return "#000000";
-  const r = parseInt(result[1]).toString(16).padStart(2, '0');
-  const g = parseInt(result[2]).toString(16).padStart(2, '0');
-  const b = parseInt(result[3]).toString(16).padStart(2, '0');
-  return `#${r}${g}${b}`;
+  // Accept 'rgba(r,g,b,a)' or 'rgb(r,g,b)'
+  const match = col.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (!match) return "#000000";
+  return rgbToHex(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
 }
 
-
-    let lastX = null, lastY = null;
+/* ----------- interpolated drawing (unchanged other than using centered draw) ----------- */
+let lastX = null, lastY = null;
 
 function drawLineInterpolated(x0, y0, x1, y1, color) {
   const dx = x1 - x0;
   const dy = y1 - y0;
   const dist = Math.hypot(dx, dy);
-  const steps = Math.ceil(dist / (brushSize / 2));
+  const steps = Math.ceil(dist / (brushSize / 2 || 1));
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
     const x = x0 + t * dx;
@@ -440,17 +604,27 @@ function drawLineInterpolated(x0, y0, x1, y1, color) {
   }
 }
 
-function handleDraw(e) {
+/* ----------- input handling (fixed to allow start outside + prevent selection) ----------- */
+
+/* helper: determine whether a client point is inside canvas rect */
+function clientPointInCanvas(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX || e.touches?.[0]?.clientX) - rect.left;
-  const y = (e.clientY || e.touches?.[0]?.clientY) - rect.top;
+  return clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom;
+}
+
+/* handleDraw now accepts client coordinates; converts to canvas coords internally */
+function handleDrawClient(clientX, clientY) {
+  const p = clientToCanvas(clientX, clientY);
+  const x = p.x;
+  const y = p.y;
+
   let color = document.getElementById('colorPicker').value;
   if (tool === 'eraser') color = EMPTY_COLOR;
   if (tool === 'tape') color = TAPE_COLOR;
 
   if (tool === 'picker') {
-    color = getPixelColor(x, y);
-    document.getElementById('colorPicker').value = rgbaToHex(color);
+    const hex = getColor(clientX, clientY);
+    document.getElementById('colorPicker').value = hex;
   } else {
     if (lastX !== null && lastY !== null) {
       drawLineInterpolated(lastX, lastY, x, y, color);
@@ -462,36 +636,164 @@ function handleDraw(e) {
   }
 }
 
+/* canvas pointer handlers (unchanged entry when pointerdown occurs on canvas) */
 canvas.addEventListener('pointerdown', e => {
+  // If pointerdown happened on canvas itself, proceed as before.
+  // But also mark global pointer down state.
+  pointerDownAnywhere = true;
+  const client = getClientFromEvent(e);
+  pointerDownStart = { clientX: client.clientX, clientY: client.clientY };
+  armedFromOutside = false; // since this event is on canvas, not outside
   isDrawing = true;
-  lastX = lastY = null;  // Reset interpolation chain
-  handleDraw(e);
+  lastX = lastY = null; // Reset interpolation chain
+  handleDrawClient(client.clientX, client.clientY);
 });
 canvas.addEventListener('pointermove', e => {
-  if (isDrawing) handleDraw(e);
+  // Normal on-canvas drawing
+  if (isDrawing) {
+    const client = getClientFromEvent(e);
+    handleDrawClient(client.clientX, client.clientY);
+  }
 });
 canvas.addEventListener('pointerup', () => {
   isDrawing = false;
   lastX = lastY = null;
- if (!growthRunning && tool !== 'picker') saveHistory();
+  pointerDownAnywhere = false;
+  pointerDownStart = null;
+  armedFromOutside = false;
+  if (!growthRunning && tool !== 'picker') saveHistory();
 });
 canvas.addEventListener('pointerleave', () => {
+  // leaving canvas stops immediate drawing but keep pointerDownAnywhere true if pointer still down
   isDrawing = false;
   lastX = lastY = null;
 });
 
 
 
-    document.getElementById('brushSize').addEventListener('input', e => brushSize = +e.target.value);
 
-    // Initialize default canvas   
+
+/* ---------- global document pointer listeners to detect presses outside canvas ---------- */
+/* on pointerdown anywhere: if outside canvas, arm the behavior so that when the pointer moves into the canvas
+   we compute intersection and start drawing from the border point */
+document.addEventListener('pointerdown', function (e) {
+  const client = getClientFromEvent(e);
+  pointerDownAnywhere = true;
+  pointerDownStart = { clientX: client.clientX, clientY: client.clientY };
+  // if pointerdown started outside canvas, set armedFromOutside; if it started inside, canvas handler will handle everything
+  if (!clientPointInCanvas(client.clientX, client.clientY)) {
+    armedFromOutside = true;
+    // Prevent page selection and other default actions if we're starting an outside-drag (but avoid blocking clicks on controls)
+    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+    if (!['input','textarea','select','button','a','label'].includes(tag)) {
+      try { e.preventDefault(); } catch (err) { /* ignore */ }
+    }
+  } else {
+    armedFromOutside = false;
+  }
+}, { passive: false });
+
+/* on pointermove anywhere: if armedFromOutside and pointer currently enters canvas, compute entry point and start drawing */
+document.addEventListener('pointermove', function (e) {
+  if (!pointerDownAnywhere || !armedFromOutside || isDrawing) return;
+  const client = getClientFromEvent(e);
+  // check if current pointer position is inside canvas
+  if (clientPointInCanvas(client.clientX, client.clientY)) {
+    // compute intersection between segment pointerDownStart -> current client point and canvas bounding rect
+    const rect = canvas.getBoundingClientRect();
+    const sx = pointerDownStart.clientX, sy = pointerDownStart.clientY;
+    const ex = client.clientX, ey = client.clientY;
+    const inter = segmentRectIntersection(sx, sy, ex, ey, rect.left, rect.top, rect.right, rect.bottom);
+    let entryClientX, entryClientY;
+    if (inter) {
+      entryClientX = inter.x;
+      entryClientY = inter.y;
+    } else {
+      // fallback: clamp current point to nearest border
+      entryClientX = clamp(client.clientX, rect.left, rect.right);
+      entryClientY = clamp(client.clientY, rect.top, rect.bottom);
+    }
+    // convert entryClient to canvas coords and start drawing from there
+    const entryCanvas = clientToCanvas(entryClientX, entryClientY);
+    lastX = lastY = null;
+    isDrawing = true;
+    armedFromOutside = false;
+    // start stroke: set last to entry point and draw a first mark there
+    const color = (tool === 'eraser') ? EMPTY_COLOR : (tool === 'tape' ? TAPE_COLOR : document.getElementById('colorPicker').value);
+    // draw a centered brush at the entry point
+    draw(entryCanvas.x, entryCanvas.y, color);
+    lastX = entryCanvas.x;
+    lastY = entryCanvas.y;
+    // then continue with current pointer position inside canvas
+    handleDrawClient(client.clientX, client.clientY);
+  }
+}, { passive: false });
+
+/* on pointerup anywhere: clear armed flags */
+document.addEventListener('pointerup', function (e) {
+  pointerDownAnywhere = false;
+  pointerDownStart = null;
+  armedFromOutside = false;
+  // If pointerup happened outside canvas we don't saveHistory here; canvas pointerup handles saves when needed
+}, { passive: true });
+
+/* ----------- slider-number sync ----------- */
+const brushSlider = document.getElementById('brushSize');
+const brushNumber = document.getElementById('brushSizeNumber');
+brushSlider.addEventListener('input', e => {
+  brushSize = +e.target.value;
+  brushNumber.value = brushSize;
+});
+brushNumber.addEventListener('change', e => {
+  let v = +e.target.value;
+  if (isNaN(v)) v = 1;
+  v = Math.max(+brushSlider.min, Math.min(+brushSlider.max, v));
+  brushSize = v;
+  brushSlider.value = v;
+  brushNumber.value = v;
+});
+
+const colorPerturbSlider = document.getElementById('colorPerturbation');
+const colorPerturbNumber = document.getElementById('colorPerturbationNumber');
+colorPerturbSlider.addEventListener('input', e => {
+  colorPerturbNumber.value = e.target.value;
+});
+colorPerturbNumber.addEventListener('change', e => {
+  let v = +e.target.value;
+  if (isNaN(v)) v = 0;
+  v = Math.max(+colorPerturbSlider.min, Math.min(+colorPerturbSlider.max, v));
+  colorPerturbSlider.value = v;
+  colorPerturbNumber.value = v;
+});
+
+const growthSpeedSlider = document.getElementById('growthSpeed');
+const growthSpeedNumber = document.getElementById('growthSpeedNumber');
+growthSpeedSlider.addEventListener('input', e => {
+  growthSpeedNumber.value = e.target.value;
+});
+growthSpeedNumber.addEventListener('change', e => {
+  let v = +e.target.value;
+  if (isNaN(v)) v = 1;
+  v = Math.max(+growthSpeedSlider.min, Math.min(+growthSpeedSlider.max, v));
+  growthSpeedSlider.value = v;
+  growthSpeedNumber.value = v;
+});
+
+/* initialize slider-number values from initial DOM values */
+brushSize = +brushSlider.value;
+brushNumber.value = brushSize;
+colorPerturbNumber.value = colorPerturbSlider.value;
+growthSpeedNumber.value = growthSpeedSlider.value;
+
+/* ----------- initialization ----------- */
 const btn = document.getElementById('growthButton');
 btn.textContent = growthRunning ? "Stop Growth" : "Start Growth";
 btn.style.backgroundColor = growthRunning ? "red" : "lightgreen";
-    ctx.fillStyle = EMPTY_COLOR;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-   saveHistory();
+ctx.fillStyle = EMPTY_COLOR;
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+saveHistory();
 document.getElementById("brushBtn").classList.add("active-tool");
-  </script>
+</script>
+
 </body>
 </html>
