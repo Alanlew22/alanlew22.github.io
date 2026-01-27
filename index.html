@@ -23,9 +23,24 @@
              display: none;
                  }
                 }
+        .triangle { display: inline-block; width: 1em; cursor: pointer; }
+        .section-content { display: none; margin-left: 1.2em; }
     </style>
 
-    
+     <script>
+        function toggleSection(id, el) {
+            const content = document.getElementById(id);
+            const tri = el.querySelector('.triangle');
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                tri.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                tri.textContent = '▶';
+            }
+        }
+    </script>
+
     <link rel="icon" href="images/iconx.png" type="image/x-icon">
 </head>
 <body>
@@ -40,7 +55,12 @@
     <img src="images/photo3.png"  alt="Profile Photo" class="mobile-hide">
 </div>
 
-<h2 style='color:#336699'>Publications</h2>
+<h2 style='color:#336699; cursor:pointer;'
+    onclick="toggleSection('pubs', this)">
+    <span class="triangle">▶</span> Publications
+</h2>
+
+<div id="pubs" class="section-content">
 
 <p>&nbsp &nbsp &nbsp &nbsp &nbsp <a href="https://arxiv.org/a/lew_a_1.html" target="_blank">Link to arXiv papers</a></p>
 <p>&nbsp &nbsp &nbsp &nbsp &nbsp <a href="https://scholar.google.com/citations?user=se0lRukAAAAJ&hl=en" target="_blank">Google scholar profile</a></p>
@@ -85,7 +105,13 @@
 <li><a href='https://www.math.cmu.edu/users/alanlew/files/theses/msc%20thesis.pdf' target='_blank'>Spectral gaps of generalized flag complexes</a>. <i>M. Sc. Thesis, Technion - Advisor: Roy Meshulam</i>, 2017.</li>
 </ul>
 
-<h2 style='color:#336699'>Presentations and Posters</h2>
+
+
+</div>
+
+
+<h2 style='color:#336699; cursor:pointer;' onclick="toggleSection('presentations', this)"><span class='triangle'>▶</span> Presentations and Posters</h2>
+<div id='presentations' class='section-content'>
 <ul>
 <li><a href='files/garland_colloquium.pdf' target='_blank'>New approaches to Garland’s method</a></li>
 <li><a href='files/sums_of_laplacian_eigenvalues.pdf' target='_blank'>Sums of Laplacian eigenvalues and sums of degrees</a></li>
@@ -98,13 +124,17 @@
 <li><a href='files/Complexes_of_graphs_with_bounded_independence_poster.pdf' target='_blank'>Complexes of graphs with bounded independence number (interactive poster)</a></li>
 <li><a href='files/Spectral%20Gaps%20of%20Generalized%20Flag%20Complexes.pdf' target='_blank'>Spectral gaps of generalized flag complexes</a></li>
 </ul>
+</div>
 
-<h2 style='color:#336699'>Extra</h2>
+<h2 style='color:#336699; cursor:pointer;' onclick="toggleSection('extra', this)"><span class='triangle'>▶</span> Extra</h2>
+<div id='extra' class='section-content'>
 <ul>
 <li><a href='gallery.html' target='_blank'>Art Galleries</a>
 <li><a href='EdenPaint.html' target='_blank'>Eden Paint App (a paint application with automatic coloring based on the Eden growth model)</a>
 <li><a href='https://scratch.mit.edu/users/PajaroComics/' target='_blank'>My Scratch user page, including some interactive math demonstrations, games and puzzles</a>
 </ul>
+</div>
+
 
 
 <h2 style='color:#336699'>Contact Information</h2>
