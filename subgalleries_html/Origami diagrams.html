@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Origami diagrams</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; text-align:center; }
+    h1 { color:#444; }
+    select { margin:20px; padding:10px; font-size:16px; }
+    #pdfViewer {
+        width:80%;
+        margin:0 auto;
+        border:1px solid #ccc;
+        border-radius:8px;
+        padding:10px;
+        background:white;
+        overflow:auto;
+        max-height:80vh;
+    }
+    canvas {
+        display:block;
+        max-width:100%;
+        height:auto;
+        margin:0 auto 10px;
+        border-radius:8px;
+    }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+</head>
+<body>
+<h1>Origami diagrams</h1>
+<select id="pdfSelect"><option value="../images/gallery/Origami diagrams/Elephant Diagram.pdf">Elephant Diagram.pdf</option></select>
+<div id="pdfViewer"></div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+    const select = document.getElementById('pdfSelect');
+    const container = document.getElementById('pdfViewer');
+
+    function renderPDF(url) {
+        container.innerHTML = ""; // clear old pages
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            const scale = 1.0; // base rendering scale
+            const containerWidth = container.clientWidth;
+            for (let i = 1; i <= pdf.numPages; i++) {
+                pdf.getPage(i).then(page => {
+                    const unscaledViewport = page.getViewport({ scale: 1.0 });
+                    const scaleFactor = containerWidth / unscaledViewport.width;
+                    const viewport = page.getViewport({ scale: scale * scaleFactor });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    container.appendChild(canvas);
+                    page.render({ canvasContext: context, viewport: viewport });
+                });
+            }
+        });
+    }
+
+    select.onchange = () => renderPDF(select.value);
+    window.addEventListener('resize', () => renderPDF(select.value));
+    renderPDF(select.value); // load first
+</script>
+</body>
+</html>

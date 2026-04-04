@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Origami models</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; color:#333; }
+    h1 { text-align:center; color:#444; }
+    .grid {
+        display:grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap:10px;
+        padding:20px;
+    }
+    .grid img {
+        width:100%;
+        height:auto;
+        cursor:pointer;
+        border-radius:8px;
+        transition: transform 0.2s;
+    }
+    .grid img:hover { transform: scale(1.05); }
+    #lightbox {
+        position:fixed; top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.9);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+    #lightbox img {
+        max-width:90%; max-height:80%;
+    }
+    #lightbox button {
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        background:black; border:none;
+        font-size:2em; color:white;
+        cursor:pointer;
+        border-radius:50%;
+        padding:10px;
+    }
+    #prev { left:5%; }
+    #next { right:5%; }
+    #close {
+        top:10%; right:10%; transform:none;
+        font-size:2em;
+    }
+    .back {
+        display:block;
+        text-align:center;
+        margin:20px;
+    }
+    .back a {
+        padding:10px 20px;
+        background:#444; color:#fff;
+        border-radius:5px;
+        text-decoration:none;
+    }
+</style>
+</head>
+<body>
+<h1>Origami models</h1>
+<div class="grid">
+<img src="../images/gallery/Origami models/IMG_4878 2.JPG" onclick="openLightbox(0)">
+<img src="../images/gallery/Origami models/IMG_4884.jpeg" onclick="openLightbox(1)">
+<img src="../images/gallery/Origami models/A76BAB8C-145A-47B2-B2CA-4F21C009DF1B.JPG" onclick="openLightbox(2)">
+<img src="../images/gallery/Origami models/IMG_4648 2.JPG" onclick="openLightbox(3)">
+<img src="../images/gallery/Origami models/IMG_4565.JPG" onclick="openLightbox(4)">
+<img src="../images/gallery/Origami models/IMG_4880 2.JPG" onclick="openLightbox(5)">
+<img src="../images/gallery/Origami models/IMG_4388.JPG" onclick="openLightbox(6)">
+<img src="../images/gallery/Origami models/IMG_4345 2.JPG" onclick="openLightbox(7)">
+<img src="../images/gallery/Origami models/IMG_4372 2.JPG" onclick="openLightbox(8)">
+<img src="../images/gallery/Origami models/IMG_4523 2.JPG" onclick="openLightbox(9)">
+<img src="../images/gallery/Origami models/IMG_4642.JPG" onclick="openLightbox(10)">
+<img src="../images/gallery/Origami models/IMG_4377 2.jpg" onclick="openLightbox(11)">
+<img src="../images/gallery/Origami models/IMG_4817 2.JPG" onclick="openLightbox(12)">
+<img src="../images/gallery/Origami models/IMG_4699 2.JPG" onclick="openLightbox(13)">
+</div>
+<div id="lightbox">
+    <button id="prev">&#10094;</button>
+    <img id="lightbox-img">
+    <button id="next">&#10095;</button>
+    <button id="close">&times;</button>
+</div>
+<div class="back"><a href="../gallery.html">Back to Main Gallery</a></div>
+<script>
+    const images = Array.from(document.querySelectorAll('.grid img')).map(img => img.src);
+    let currentIndex = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    function openLightbox(index) {
+        currentIndex = index;
+        lightbox.style.display = 'flex';
+        lightboxImg.src = images[currentIndex];
+    }
+    function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIndex];
+    }
+    document.getElementById('next').onclick = showNext;
+    document.getElementById('prev').onclick = showPrev;
+    document.getElementById('close').onclick = () => lightbox.style.display = 'none';
+
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            lightbox.style.display = 'none';
+        }
+    });
+
+    window.addEventListener('keydown', function(e) {
+        if (lightbox.style.display === 'flex') {
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'Escape') lightbox.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

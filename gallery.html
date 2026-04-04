@@ -133,6 +133,29 @@
   })();
 </script>
 
+<li>
+  <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" style="width:100px;height:100px;" />
+  <div>
+    <a href="subgalleries_html/Origami diagrams.html">Origami diagrams</a>
+    <p></p>
+  </div>
+</li>
+
+<li>
+  <img id="thumb-Origami models" />
+  <div>
+    <a href="subgalleries_html/Origami models.html">Origami models</a>
+    <p></p>
+  </div>
+</li>
+<script>
+  (function(){
+    const imgs = ['images/gallery/Origami models/IMG_4878 2.JPG', 'images/gallery/Origami models/IMG_4884.jpeg', 'images/gallery/Origami models/A76BAB8C-145A-47B2-B2CA-4F21C009DF1B.JPG', 'images/gallery/Origami models/IMG_4648 2.JPG', 'images/gallery/Origami models/IMG_4565.JPG', 'images/gallery/Origami models/IMG_4880 2.JPG', 'images/gallery/Origami models/IMG_4388.JPG', 'images/gallery/Origami models/IMG_4345 2.JPG', 'images/gallery/Origami models/IMG_4372 2.JPG', 'images/gallery/Origami models/IMG_4523 2.JPG', 'images/gallery/Origami models/IMG_4642.JPG', 'images/gallery/Origami models/IMG_4377 2.jpg', 'images/gallery/Origami models/IMG_4817 2.JPG', 'images/gallery/Origami models/IMG_4699 2.JPG'];
+    const rand = imgs[Math.floor(Math.random()*imgs.length)];
+    document.getElementById("thumb-Origami models").src = rand;
+  })();
+</script>
+
 </ul>
 <a href="index.html" class="footer-btn">Back to Homepage</a>
 </body>
