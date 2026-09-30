@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Turn turn turn!</title>
+  <link rel="icon" href="images/icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <canvas id="game" width="600" height="600" aria-label="Puzzle game board with walls" tabindex="0"></canvas>
+    <p id="help">Tap/click a piece to move it. Rocks are walls. Press <kbd>S</kbd> for the solution or <kbd>H</kbd> for help.</p>
+  </main>
+  <input id="load-file" type="file" accept=".puzzle,application/json" hidden>
+  <script src="turnturnturn.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Puzzle Walls edition — documentation</title>
+  <style>body{max-width:980px;margin:38px auto;padding:0 20px;font:16px/1.55 system-ui,sans-serif;color:#211622;background:#fffdf6}h1,h2,h3{color:#6e1c69;line-height:1.2}code{background:#f1ebdf;padding:1px 4px;border-radius:3px}table{border-collapse:collapse;width:100%;margin:14px 0}th,td{border:1px solid #cfc3ae;padding:8px;text-align:left;vertical-align:top}th{background:#eee2c8}.note{padding:12px 15px;background:#f6eaf4;border-left:4px solid #7a1d70}a{color:#6e1c69}</style>
+</head>
+<body>
+  <h1>Turn turn turn! documentation</h1>
+  <p>This documents <em>Turn turn turn!</em>, the separate browser translation of the supplied <code>new version</code> Python game. Play it at <a href="new-version.html">new-version.html</a>. The earlier no-walls game and its documentation remain unchanged; its movement has also been updated to animate as described below.</p>
+  <h2>Game rules</h2>
+  <p>The game has four coloured arrow pieces, a 4 × 4 grid, one matching goal square per piece, and the original coloured image controls. Unlike the older edition, every generated game has a random set of four distinct goal locations, rather than goals fixed on the diagonal.</p>
+  <ul><li>Tap/click a piece to move it one cell in the direction shown.</li><li>Moves off the board, into a piece, or into a rock are illegal.</li><li>After a legal move, all other pieces orthogonally next to the destination rotate 90° counter-clockwise. Rocks never rotate or move.</li><li>You win when each piece reaches its own matching colour goal. Direction is irrelevant to victory.</li><li>Use the icon buttons for Undo, Reset, Save, Load, and the five difficulty levels. Press <kbd>S</kbd> to toggle the solution sequence, displayed as colour-coded stars. Press <kbd>H</kbd> to open/close the game-rule help dialog.</li><li>The compact <strong>S</strong> and <strong>H</strong> buttons at the bottom-right of the canvas provide the same touch-friendly controls on mobile devices.</li></ul>
+  <p>Each legal movement is animated in the source order: the selected piece slides to its destination over 320 ms; then the adjacent pieces rotate over 260 ms. Input is locked during this animation, as it is in the original Tkinter application.</p>
+  <div class="note"><strong>Walls:</strong> each newly generated puzzle chooses 0–3 non-overlapping rocks. The supplied <code>rock_sprite.png</code> is drawn on every rock. Rocks are fixed walls; despite placeholder movement methods in the Python source, there is no implemented rock-motion rule to reproduce.</div>
+  <h2>Difficulty and generation parity</h2>
+  <p>Easy requires 9–12 solution moves; Medium 13–15; Hard 16–19; Harder 20–24. Insane tests 5,000 random puzzles and chooses the longest. A generator walk is limited to 100 moves, as in <code>puzzle_with_extras.py</code>. The startup game seeks 11–13 moves in at most 10,000 attempts; normal difficulty buttons seek for at most 50,000. Every trial chooses a fresh rock count from 0–3, matching the Python UI.</p>
+  <p>The generator deliberately retains the source’s inverse internal direction convention. It creates a random solved arrangement, performs random reverse moves while rotating nearby pieces before each reverse move, then reverses the recorded move list. <code>MakerPiece.guiDirection()</code> converts the internal direction into the direction shown and used by the playable game.</p>
+  <h2>Implementation reference</h2>
+  <table><thead><tr><th>Function/class</th><th>Responsibility</th></tr></thead><tbody>
+    <tr><td><code>eq</code>, <code>add</code>, <code>nearby</code></td><td>Compare coordinates, add a direction to a coordinate, and detect orthogonally neighbouring cells.</td></tr>
+    <tr><td><code>turn</code></td><td>Returns the next counter-clockwise direction: right → up → left → down → right.</td></tr>
+    <tr><td><code>copyBoard</code></td><td>Deep-copies piece positions/directions, preserving immutable entries in the board history.</td></tr>
+    <tr><td><code>randomInt</code></td><td>Returns an integer in <code>[0, max)</code> for all browser random selection.</td></tr>
+    <tr><td><code>preload</code></td><td>Loads original piece/button images plus <code>new version/images/rock_sprite.png</code> before creating a puzzle.</td></tr>
+    <tr><td><code>Logic.constructor</code></td><td>Stores targets, first board-history snapshot, solution, fixed rock positions, and undo metadata.</td></tr>
+    <tr><td><code>Logic.board</code>, <code>flips</code>, <code>moved</code></td><td>Return the newest board, rotation list, and moved-piece entry respectively.</td></tr>
+    <tr><td><code>Logic.move</code></td><td>Checks bounds, rocks and occupied cells, rotates pieces beside a legal destination, and records a new board state.</td></tr>
+    <tr><td><code>Logic.undo</code>, <code>reset</code></td><td>Remove one recorded state or return to the original saved board.</td></tr>
+    <tr><td><code>Logic.won</code></td><td>Checks every current piece position against its same-index coloured target.</td></tr>
+    <tr><td><code>Logic.saveData</code></td><td>Builds the portable browser save object, including rock locations.</td></tr>
+    <tr><td><code>MakerPiece</code></td><td>Source-compatible reverse-generator piece. Its <code>canMove</code>, <code>move</code>, <code>rotate</code>, and <code>guiDirection</code> implement internal generation rules and conversion.</td></tr>
+    <tr><td><code>distinctPositions</code></td><td>Generates unique random cells, optionally avoiding targets, for starting positions and rocks.</td></tr>
+    <tr><td><code>generateOnce</code></td><td>Creates random distinct starts and rocks, runs up to 100 reverse moves, and returns targets, final board, reversed answer, and rocks.</td></tr>
+    <tr><td><code>randomPuzzle</code>, <code>hardest</code></td><td>Find a puzzle in a requested move range, or select the longest of 5,000 trials.</td></tr>
+    <tr><td><code>makeNew</code></td><td>Selects a difficulty generator asynchronously, shows a temporary creation overlay, and installs the result.</td></tr>
+    <tr><td><code>angle</code>, <code>sprite</code></td><td>Map a vector to canvas image rotation and draw a 100 × 100 sprite centred at a cell.</td></tr>
+    <tr><td><code>draw</code>, <code>drawShortcutButton</code>, <code>drawHelp</code></td><td>Render grid, goals, controls, rocks, pieces, win text, solution stars, bottom S/H controls, and the modal game-rule help dialog.</td></tr>
+    <tr><td><code>animate</code></td><td>Uses <code>requestAnimationFrame</code> to run a slide phase followed by a rotation phase, then re-enables interaction.</td></tr>
+    <tr><td><code>hit</code>, <code>point</code></td><td>Convert mouse/touch coordinates into the original 50-pixel circular cell hit area, even when the canvas is responsively scaled.</td></tr>
+    <tr><td><code>toggleHelp</code>, <code>handle</code></td><td>Open/close the help dialog and dispatch touches to the bottom S/H controls, pieces, and icon controls. Board input is paused while help is visible.</td></tr>
+    <tr><td><code>save</code></td><td>Downloads a JSON browser-save as <code>puzzle-walls.puzzle</code>.</td></tr>
+    <tr><td><code>picker change listener</code></td><td>Reads and validates JSON, then restores the initial board, targets, solution and rocks.</td></tr>
+    <tr><td><code>pointerdown</code>, <code>keydown</code></td><td>Provide mouse/pen/touch activation plus case-insensitive <kbd>S</kbd> solution and <kbd>H</kbd> help toggling.</td></tr>
+    <tr><td><code>preload().then(...)</code></td><td>Creates and draws the initial 11–13 move puzzle only after every image is ready.</td></tr>
+  </tbody></table>
+  <h2>Save format and files</h2>
+  <p>Browser saves are JSON stored with a <code>.puzzle</code> suffix. They contain <code>n</code>, <code>target</code>, original <code>board</code>, <code>solution</code>, and <code>rocks</code>. As in the Python program, saving records the initial board rather than an in-progress position. It cannot read Python pickle saves: browser deserialization of pickle data would be unsafe.</p>
+  <ul><li><code>new-version.html</code> — Walls edition page.</li><li><code>new-version.js</code> — Walls game, generator, animation, input and persistence.</li><li><code>documentation-walls.html</code> — this separate, updated reference.</li><li><code>new version/images/</code> — unchanged supplied artwork, including the rock sprite.</li></ul>
+</body></html>

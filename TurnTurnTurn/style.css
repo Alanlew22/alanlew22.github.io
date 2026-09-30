@@ -1,0 +1,8 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #fffdf3; color: #32122f; }
+main { width: min(100vw, 700px); padding: 14px; text-align: center; }
+#game { display: block; width: min(100%, 600px); height: auto; margin: auto; border-radius: 3px; touch-action: manipulation; outline: none; }
+#game:focus-visible { outline: 3px solid #7a1d70; outline-offset: 4px; }
+#help { margin: 10px 0 0; font-size: .92rem; }
+kbd { padding: 1px 5px; border: 1px solid #aaa; border-radius: 3px; background: white; }
