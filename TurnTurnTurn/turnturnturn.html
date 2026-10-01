@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Turn turn turn!</title>
   <link rel="icon" href="images/icon.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=turnturnturn-20261001-2">
 </head>
 <body>
   <main>
     <div id="win-message" aria-live="polite"></div>
-    <div class="game-shell">
-      <canvas id="game" width="600" height="600" aria-label="Puzzle game board with walls" tabindex="0"></canvas>
-      <label class="mobile-load" aria-label="Load puzzle file">
-        <input id="load-file" type="file" accept=".puzzle,application/json,text/plain">
+    <div class="game-shell" style="position:relative;width:min(100%,600px);margin:auto">
+      <canvas id="game" width="600" height="600" aria-label="Puzzle game board with walls" tabindex="0" style="display:block;width:100%;height:auto"></canvas>
+      <label class="mobile-load" aria-label="Load puzzle file" style="position:absolute;left:80%;top:80%;width:20%;height:20%;z-index:2;cursor:pointer">
+        <input id="load-file" type="file" accept=".puzzle,application/json,text/plain" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
       </label>
     </div>
     <p id="help">Tap/click a piece to move it. Rocks are walls. Press <kbd>S</kbd> for the solution or <kbd>H</kbd> for help.</p>
     <div id="solution" aria-live="polite"></div>
   </main>
-  <script src="turnturnturn.js"></script>
+  <script src="turnturnturn.js?v=turnturnturn-20261001-2"></script>
 </body>
 </html>
