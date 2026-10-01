@@ -9,10 +9,16 @@
 </head>
 <body>
   <main>
-    <canvas id="game" width="600" height="600" aria-label="Puzzle game board with walls" tabindex="0"></canvas>
+    <div id="win-message" aria-live="polite"></div>
+    <div class="game-shell">
+      <canvas id="game" width="600" height="600" aria-label="Puzzle game board with walls" tabindex="0"></canvas>
+      <label class="mobile-load" aria-label="Load puzzle file">
+        <input id="load-file" type="file" accept=".puzzle,application/json,text/plain">
+      </label>
+    </div>
     <p id="help">Tap/click a piece to move it. Rocks are walls. Press <kbd>S</kbd> for the solution or <kbd>H</kbd> for help.</p>
+    <div id="solution" aria-live="polite"></div>
   </main>
-  <input id="load-file" type="file" accept=".puzzle,application/json" hidden>
   <script src="turnturnturn.js"></script>
 </body>
 </html>

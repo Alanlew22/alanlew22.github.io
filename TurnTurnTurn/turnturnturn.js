@@ -6,7 +6,7 @@
   const ROOT = 'images/';
   const PIECES = ['piece_sprite_red.png', 'piece_sprite_green.png', 'piece_sprite_black.png', 'piece_sprite_blue.png'];
   const BUTTONS = [['undo.png',[4,0],'undo'],['reset.png',[4,1],'reset'],['save.png',[4,2],'save'],['load.png',[4,3],'load'],['new_easy.png',[0,-1],'easy'],['new_medium.png',[1,-1],'medium'],['new_hard.png',[2,-1],'hard'],['new_harder.png',[3,-1],'harder'],['new_insane.png',[4,-1],'insane']];
-  const canvas = document.querySelector('#game'), ctx = canvas.getContext('2d'), picker = document.querySelector('#load-file');
+  const canvas = document.querySelector('#game'), ctx = canvas.getContext('2d'), picker = document.querySelector('#load-file'), winMessage = document.querySelector('#win-message'), solutionMessage = document.querySelector('#solution');
   const images = {}; let logic, busy = false, solutionVisible = false, helpVisible = false;
   const eq = (a,b) => a[0] === b[0] && a[1] === b[1];
   const add = (a,b) => [a[0]+b[0],a[1]+b[1]];
@@ -57,11 +57,12 @@
     logic.targets.forEach(([x,y],i)=>{ctx.fillStyle=COLORS[i];ctx.fillRect(x*CELL,MENU+y*CELL,CELL,CELL);});
     BUTTONS.forEach(([file,[x,y]])=>sprite(images[file],x*CELL+60,MENU+y*CELL+60)); logic.rocks.forEach(([x,y])=>sprite(images['rock_sprite.png'],x*CELL+60,MENU+y*CELL+60));
     const shown=animation?.phase==='move'?animation.before:logic.board(); shown.forEach(([p,d],i)=>{let x=p[0],y=p[1],a=angle(d);if(animation?.phase==='move'&&i===animation.moved){const from=animation.before[i][0],to=animation.after[i][0];x=from[0]+(to[0]-from[0])*animation.progress;y=from[1]+(to[1]-from[1])*animation.progress;}if(animation?.phase==='rotate'&&animation.flips.includes(i)){const start=animation.before[i][1],end=animation.after[i][1];a=angle(start)+(eq(end,turn(start))?-Math.PI/2:Math.PI/2)*animation.progress;}sprite(images[PIECES[i]],x*CELL+60,MENU+y*CELL+60,a);});
-    if(logic.won()&&!animation){ctx.fillStyle='#7a1d70';ctx.textAlign='center';ctx.font='bold 50px serif';ctx.fillText('YOU WON!',310,MENU+55);}if(solutionVisible){ctx.textAlign='left';ctx.font='bold 12px serif';logic.solution.forEach((piece,i)=>{ctx.fillStyle=COLORS[piece];ctx.fillText('*',10+9*i,594);});}
+    winMessage.textContent=logic.won()&&!animation?'YOU WON!':''; renderSolution();
     drawShortcutButton(420, 578, 'S'); drawShortcutButton(452, 578, 'H');
     if(status){ctx.fillStyle='rgba(255,255,255,.82)';ctx.fillRect(145,270,310,60);ctx.fillStyle='#7a1d70';ctx.textAlign='center';ctx.font='bold 20px system-ui';ctx.fillText(status,300,307);}
     if(helpVisible) drawHelp();
   }
+  function renderSolution() { solutionMessage.replaceChildren(); if(!solutionVisible)return; logic.solution.forEach(piece=>{const star=document.createElement('span');star.className='solution-star';star.style.color=COLORS[piece];star.textContent='*';solutionMessage.append(star);}); }
   function drawShortcutButton(x, y, label) { ctx.fillStyle='#f8e4f4';ctx.strokeStyle='#7a1d70';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,26,18,5);ctx.fill();ctx.stroke();ctx.fillStyle='#4d1249';ctx.font='bold 13px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x+13,y+9);ctx.textBaseline='alphabetic'; }
   function drawHelp() { ctx.fillStyle='rgba(31,15,29,.62)';ctx.fillRect(0,0,W,W);ctx.fillStyle='#fffbed';ctx.strokeStyle='#7a1d70';ctx.lineWidth=4;ctx.beginPath();ctx.roundRect(38,142,524,316,14);ctx.fill();ctx.stroke();ctx.fillStyle='#4d1249';ctx.textAlign='center';ctx.font='bold 29px serif';ctx.fillText('Turn turn turn!',300,188);ctx.font='16px system-ui';const lines=['Move a piece one square in the direction it points by touching it.','You cannot leave the board or move onto an occupied space.','After a move, every piece orthogonally adjacent to the moved piece','turns 90° in counterclockwise direction.','Get each piece onto its matching colored square to win.','Use Undo to reverse a move, Reset to start over,', 'and S to see the solution.','Press H or tap the H button again to close this help.'];lines.forEach((line,i)=>ctx.fillText(line,300,225+i*31)); }
   function animate(before,after,moved,flips) { busy=true; const phase=(name,duration,next)=>{const began=performance.now(),frame=now=>{const progress=Math.min(1,(now-began)/duration);draw('',{phase:name,progress,before,after,moved,flips});progress<1?requestAnimationFrame(frame):next();};requestAnimationFrame(frame);};phase('move',320,()=>phase('rotate',260,()=>{busy=false;draw();})); }
